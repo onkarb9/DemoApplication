@@ -36,8 +36,12 @@ public class ViewControllers {
 	public String success(@RequestParam("name") String name, @RequestParam("email") String email,
 			@RequestParam("username") String username, @RequestParam("password") String password)
 	{
+		if (username.matches("[a-zA-Z]+") && (name.matches("[a-zA-Z ]+"))) {
 		s.create(name,email,username,password);
-		return "Signuplogin";
+		return "Signuplogin"; 
+		}
+		else
+			return "errusername";
 	}
 	
 	@RequestMapping("/login")
