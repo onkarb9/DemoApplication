@@ -63,7 +63,7 @@ public class ViewControllers {
 			
 			String Fullname=s.getName(username);
 			m.addAttribute("Fullname",Fullname);
-		return "Welcome";
+			return "Welcome";
 		}
 		else
 			return "errlogin";

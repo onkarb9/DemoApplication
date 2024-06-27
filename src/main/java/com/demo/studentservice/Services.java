@@ -1,8 +1,12 @@
 package com.demo.studentservice;
+import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.demo.dao.LoginHistoryRepository;
 import com.demo.dao.UserRepository;
+import com.demo.entities.LoginHistory;
 import com.demo.entities.Studentdata;
 
 @Service
@@ -11,6 +15,8 @@ public class Services {
 	@Autowired
 	UserRepository us ;
 	
+	@Autowired
+	LoginHistoryRepository lgh;
 	
 
 	public void create(String name,String email,String username,String password) {
@@ -34,6 +40,14 @@ public class Services {
 				up=x.getPassword();
 			}
 			if(un.equals(username)&& up.equals(userpassword)) {
+				
+				LoginHistory lg=new LoginHistory();
+				
+				lg.setUsername(username);
+				lg.setLoginTime(LocalDateTime.now());
+				
+		        lgh.save(lg);
+				
 				return true;
 			}
 
