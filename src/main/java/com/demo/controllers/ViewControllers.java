@@ -37,9 +37,15 @@ public class ViewControllers {
 			@RequestParam("username") String username, @RequestParam("password") String password)
 	{
 		if (username.matches("[a-zA-Z]+") && (name.matches("[a-zA-Z ]+"))) {
+			if(s.isPresent(username)) {
+				return "errpresent";
+			}
+			else {
 		s.create(name,email,username,password);
+		System.out.println("signup happened");
 		return "Signuplogin"; 
 		}
+			}
 		else
 			return "errusername";
 	}
@@ -60,7 +66,7 @@ public class ViewControllers {
 		return "Welcome";
 		}
 		else
-			return "login";
+			return "errlogin";
 	}
 
 }

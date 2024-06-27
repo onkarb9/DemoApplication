@@ -55,6 +55,24 @@ public class Services {
 		}
 		return name;
 	}
+
+	public boolean isPresent(String username) {
+		
+		List<Studentdata> sd=us.findByUsername(username);
+		String uname = null;
+		for(Studentdata x: sd) {
+			uname=x.getUsername();
+		}
+		
+		if(uname==null) {
+			return false;
+		}
+		else if(uname.equals(username)) {
+			return true;
+		}
+		else 
+		return false;
+	}
 	
 
 }
