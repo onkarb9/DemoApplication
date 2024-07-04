@@ -37,7 +37,7 @@ public class ViewControllers {
 			@RequestParam("username") String username, @RequestParam("password") String password)
 	{
 		if (username.matches("[a-zA-Z]+") && (name.matches("[a-zA-Z ]+"))) {
-			if(s.isPresent(username)) {
+			if(s.isPresent(username,email)) {
 				return "errpresent";
 			}
 			else {

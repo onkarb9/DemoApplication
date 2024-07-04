@@ -10,5 +10,7 @@ public interface UserRepository extends CrudRepository<Studentdata, Integer>{
 	public List<Studentdata> findByUsername(String un);
 	
 	public List<Studentdata> findByName(String un);
+	
+	public List<Studentdata> findByEmail(String un);
 
 }

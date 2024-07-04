@@ -70,18 +70,27 @@ public class Services {
 		return name;
 	}
 
-	public boolean isPresent(String username) {
+	public boolean isPresent(String username,String useremail) {
 		
-		List<Studentdata> sd=us.findByUsername(username);
+		List<Studentdata> sdun=us.findByUsername(username);
 		String uname = null;
-		for(Studentdata x: sd) {
+		
+		List<Studentdata> sdem=us.findByEmail(useremail);
+		String uemail = null;
+		
+		
+		for(Studentdata x: sdun) {
 			uname=x.getUsername();
 		}
 		
-		if(uname==null) {
+		for(Studentdata x: sdem) {
+			uemail=x.getEmail();
+		}
+		
+		if(uname==null && uemail==null) {
 			return false;
 		}
-		else if(uname.equals(username)) {
+		else if(uname.equals(username) && (uemail.equals(useremail))) {
 			return true;
 		}
 		else 
