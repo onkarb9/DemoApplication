@@ -73,6 +73,7 @@ public class ViewControllers {
 			
 			String Fullname=s.getName(username);
 			m.addAttribute("Fullname",Fullname);
+			System.out.println("login happened");
 			return "Welcome";
 		}
 		else
