@@ -16,22 +16,50 @@ body {
   text-align: left;
   padding: 8px;
 }
+
+.password-container {
+  position: relative;
+  display: inline-block; /* Ensures the toggle icon stays inside the input */
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: black; /* Change the color to black */
+}
 </style>
 </head>
 <body>
 
 <div class="center_div">
-  <body>
 	<h1>WELCOME TO SIGNUP PAGE</h1>
 	<form action="success" method="post">
-		Name: <input type="text" name="name">
-		Email: <input type="text" name="email">
-		User Name: <input type="text" name="username">
-		Password: <input type="password" name="password">
+		Name: <input type="text" name="name"><br><br>
+		Email: <input type="text" name="email"><br><br>
+		User Name: <input type="text" name="username"><br><br>
+		<div class="password-container">
+			Password: <input type="password" name="password" id="password">
+			<span class="password-toggle" onclick="togglePasswordVisibility()">👁️</span>
+		</div>
+		<br>
 		<input type="submit">
 	</form>
-</body>
 </div>
+
+<script>
+function togglePasswordVisibility() {
+  var passwordField = document.getElementById("password");
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+  } else {
+    passwordField.type = "password";
+  }
+}
+</script>
 
 </body>
 </html>
