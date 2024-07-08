@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.demo.entities.Studentdata;
 import com.demo.studentservice.Services;
 
+
+
 @Controller
 public class ViewControllers {
 	
@@ -36,7 +38,7 @@ public class ViewControllers {
 	public String success(@RequestParam("name") String name, @RequestParam("email") String email,
 			@RequestParam("username") String username, @RequestParam("password") String password)
 	{
-		if (username.matches("[a-zA-Z]+") && (name.matches("[a-zA-Z ]+"))) {
+		if (username.matches("[a-zA-Z]+") && name.matches("[a-zA-Z ]+") && email.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.com\\b")) {
 			
 			
 			
