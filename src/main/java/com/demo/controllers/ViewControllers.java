@@ -38,7 +38,16 @@ public class ViewControllers {
 	public String success(@RequestParam("name") String name, @RequestParam("email") String email,
 			@RequestParam("username") String username, @RequestParam("password") String password)
 	{
-		if (username.matches("[a-zA-Z]+") && name.matches("[a-zA-Z ]+") && email.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.com\\b")) {
+		
+		if (name == null || name.isEmpty() ||
+	            email == null || email.isEmpty() ||
+	            username == null || username.isEmpty() ||
+	            password == null || password.isEmpty()) {
+	            return "mandatoryfields"; // or return appropriate error message or handle it as needed
+	        }
+		
+		else if
+		 (username.matches("[a-zA-Z]+") && name.matches("[a-zA-Z ]+") && email.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.com\\b")) {
 			
 			
 			
