@@ -45,30 +45,31 @@ public class ViewControllers {
 	            password == null || password.isEmpty()) {
 	            return "mandatoryfields"; // or return appropriate error message or handle it as needed
 	        }
-		
-		else if
-		 (username.matches("[a-zA-Z]+") && name.matches("[a-zA-Z ]+") && email.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.com\\b")) {
-			
-			
-			
-			if(s.isUsernamePresent(username)) {
+		else if(!name.matches("[a-zA-Z ]+"))
+		{
+			return "validname";
+		}
+		else if(!username.matches("[a-zA-Z]+"))
+		{
+			return "validusername";
+		}
+		else if(!email.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.com\\b"))
+		{
+			return "validemail";
+		}
+		else if(s.isEmailPresent(email)) 
+		{
+			return "emailpresent";
+		}
+		else if(s.isUsernamePresent(username)) 
+		{
 				return "usernamepresent";
-			}
-			
-			if(s.isEmailPresent(email)) {
-				return "emailpresent";
-			}
-			
-			
-			
+		}
 			else {
 		s.create(name,email,username,password);
 		System.out.println("signup happened");
 		return "Signuplogin"; 
 		}
-			}
-		else
-			return "errusername";
 	}
 	
 	@RequestMapping("/login")

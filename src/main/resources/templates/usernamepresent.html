@@ -1,38 +1,86 @@
 <!DOCTYPE html>
-<html>
-<head>
-<style>
-body {
-  margin-left: 200px;
-  background: #5d9ab2 url("img_tree.png") no-repeat top left;
-}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup Page</title>
+    <style>
+      body {
+        background: linear-gradient(
+          to right,
+          #4b6cb7,
+          #182848
+        ); /* Gradient background */
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #fff;
+      }
 
-.center_div {
-  border: 1px solid gray;
-  margin-left: auto;
-  margin-right: auto;
-  width: 90%;
-  background-color: #d0f0f6;
-  text-align: left;
-  padding: 8px;
-}
-</style>
-</head>
-<body>
+      .container {
+        text-align: center;
+        padding: 20px;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Semi-transparent white background */
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+      }
+
+      form {
+        max-width: 400px;
+        margin: auto;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="submit"] {
+        display: block;
+        width: calc(100% - 20px);
+        margin: 10px auto;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+      }
+
+      input[type="submit"] {
+        background-color: #4caf50; /* Green button color */
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049; /* Darker button color on hover */
+      }
+    </style>
+  </head>
+  <body>
     <div class="container">
-        <h1>WELCOME TO SIGNUP PAGE</h1>
-	<form action="success" method="post">
-		Name: <input type="text" name="name">
-		Email: <input type="text" name="email">
-		User Name: <input type="text" name="username">
-		Password: <input type="password" name="password">
-		<input type="submit">
-	</form>
-        
-        <!-- Error message displayed conditionally -->
-        <div class="error-message ">
+      <h1>WELCOME TO SIGNUP PAGE</h1>
+      <form action="success" method="post">
+        Name: <input type="text" name="name" /><br />
+        Email: <input type="text" name="email" /><br />
+        User Name: <input type="text" name="username" /><br />
+        <div class="password-container">
+          Password: <input type="password" name="password" id="password" />
+          <span class="password-toggle" onclick="togglePasswordVisibility()"
+            >👁️</span
+          >
+        </div>
+        <br />
+        <input type="submit" />
+      </form>
+      <div class="error-message ">
             Username already in use.
         </div>
     </div>
-</body>
+  </body>
 </html>
