@@ -1,34 +1,45 @@
 package com.demo.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
-public class Studentdata {
+public class Userdata {
+	
 	@Id
-	@GeneratedValue
-	private int id;
-	private String name;
-	private String email;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
 	private String username;
 	private String password;
-	public Studentdata(int id, String name, String email, String username, String password) {
+	private LocalDateTime signupTime;
+	
+	
+	
+	
+	public Userdata() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Userdata(Long id, String name, String email, String username, String password, LocalDateTime signupTime) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.username = username;
 		this.password = password;
+		this.signupTime = signupTime;
 	}
-	public Studentdata() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -55,11 +66,11 @@ public class Studentdata {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Override
-	public String toString() {
-		return "Studentdata [id=" + id + ", name=" + name + ", email=" + email + ", username=" + username
-				+ ", password=" + password + "]";
+	public LocalDateTime getSignupTime() {
+		return signupTime;
+	}
+	public void setSignupTime(LocalDateTime signupTime) {
+		this.signupTime = signupTime;
 	}
 	
-
 }
