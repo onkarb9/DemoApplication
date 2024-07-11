@@ -40,9 +40,9 @@ public class Services {
 				up=x.getPassword();
 			}
 			if(un.equals(username)&& up.equals(userpassword)) {
-				
+				Userdata user = sd.get(0);
 				LoginHistory lg=new LoginHistory();
-				
+				lg.setU(user);
 				lg.setUsername(username);
 				lg.setLoginTime(LocalDateTime.now());
 				

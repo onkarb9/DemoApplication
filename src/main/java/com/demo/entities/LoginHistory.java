@@ -4,7 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +21,10 @@ public class LoginHistory {
     
     private LocalDateTime loginTime;
     
+    @ManyToOne
+    @JoinColumn(name="user_id",referencedColumnName="id")
+    private Userdata u;
+    
     
 
 	public LoginHistory() {
@@ -27,12 +32,17 @@ public class LoginHistory {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LoginHistory(int id, String username, LocalDateTime loginTime) {
+	
+
+	public LoginHistory(int id, String username, LocalDateTime loginTime, Userdata u) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.loginTime = loginTime;
+		this.u = u;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -56,6 +66,14 @@ public class LoginHistory {
 
 	public void setLoginTime(LocalDateTime loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	public Userdata getU() {
+		return u;
+	}
+
+	public void setU(Userdata u) {
+		this.u = u;
 	}
 
     
