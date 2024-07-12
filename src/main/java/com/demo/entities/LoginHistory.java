@@ -6,11 +6,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
 @Entity
-//@Table(name = "login_history")
+@Table(name = "Loginhistory")
 public class LoginHistory {
 
     @Id
@@ -22,7 +23,7 @@ public class LoginHistory {
     private LocalDateTime loginTime;
     
     @ManyToOne
-    @JoinColumn(name="user_id",referencedColumnName="id")
+    @JoinColumn(name="user_id",referencedColumnName="userid")
     private Userdata u;
     
     

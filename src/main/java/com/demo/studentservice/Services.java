@@ -25,7 +25,7 @@ public class Services {
 				ud.setEmail(email);
 				ud.setUsername(username);
 				ud.setPassword(password);
-				ud.setSignupTime(LocalDateTime.now());
+				ud.setCreated(LocalDateTime.now());
 				us.save(ud);
 		
 	}
@@ -46,6 +46,11 @@ public class Services {
 				lg.setUsername(username);
 				lg.setLoginTime(LocalDateTime.now());
 				
+				
+				user.setLogincount(user.getLogincount() + 1);
+				user.setLatestlogin(LocalDateTime.now());
+				
+				us.save(user);
 		        lgh.save(lg);
 				
 				return true;
