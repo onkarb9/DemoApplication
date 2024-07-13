@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Details</title>
+    <style>
+      body {
+        background: linear-gradient(
+          45deg,
+          #7b4397,
+          #dc2430
+        ); /* Gradient background */
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #fff; /* White text color */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .form-container {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.9
+        ); /* Semi-transparent white background */
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+        padding: 30px;
+        width: 100%;
+        max-width: 500px; /* Set a maximum width for the form container */
+      }
+
+      h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #333; /* Darker text color for the header */
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin: 10px 0 5px;
+        color: #333;
+      }
+
+      select,
+      input[type="text"] {
+        width: 100%; /* Make inputs and selects full width */
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 15px;
+      }
+
+      select:focus,
+      input[type="text"]:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      button {
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .form-container .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-container .form-group:last-of-type {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Update Your Details</h2>
+      <form action="/updateDetails" method="post">
+        <div class="form-group">
+          <label for="updateField">Select Field to Update:</label>
+          <select id="updateField" name="updateField" required>
+            <option value="" disabled selected>Select a field</option>
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="username">Username</option>
+            <option value="password">Password</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newValue">New Value:</label>
+          <input type="text" id="newValue" name="newValue" required />
+        </div>
+        <input type="hidden" name="username" th:value="${username}" />
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  </body>
+</html>

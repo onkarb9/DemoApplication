@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,6 +33,12 @@ public class ViewControllers {
 	{
 		return "signup";
 	}
+	
+	@RequestMapping(value = "/success", method = RequestMethod.GET)
+    public String handleGetRequest() {
+        // Redirect to signup page if a GET request is made to /success
+        return "redirect:/signup";
+    }
 	
 	@RequestMapping("/success")
 	public String success(@RequestParam("name") String name, @RequestParam("email") String email,
@@ -77,6 +84,12 @@ public class ViewControllers {
 		return "login";
 	}
 	
+	@RequestMapping(value = "/loginsuccess", method = RequestMethod.GET)
+    public String handleGetRequest1() {
+        // Redirect to login page if a GET request is made to /success
+        return "redirect:/login";
+    }
+	
 	@RequestMapping("/loginsuccess")
 	public String loginsuccess(@RequestParam("name") String username, @RequestParam("password") String userpassword,Model m)
 	{
@@ -89,6 +102,18 @@ public class ViewControllers {
 		}
 		else
 			return "errlogin";
+	}
+	
+	@RequestMapping("/updateuserdetails")
+	public String updateuserdetails()
+	{
+		return "updateuserdetails";
+	}
+	
+	@RequestMapping("/updateDetails")
+	public String updateuser()
+	{
+		return "login";
 	}
 
 }

@@ -18,13 +18,18 @@ public class Services {
 	@Autowired
 	LoginHistoryRepository lgh;
 	
+	@Autowired
+    private PasswordService passwordService;
+	
 
 	public void create(String name,String email,String username,String password) {
+		
+		String hashedPassword = passwordService.hashPassword(password);
 		Userdata ud=new Userdata();
 				ud.setName(name);
 				ud.setEmail(email);
 				ud.setUsername(username);
-				ud.setPassword(password);
+				ud.setPassword(hashedPassword);
 				ud.setCreated(LocalDateTime.now());
 				us.save(ud);
 		
@@ -39,7 +44,7 @@ public class Services {
 				un=x.getUsername();
 				up=x.getPassword();
 			}
-			if(un.equals(username)&& up.equals(userpassword)) {
+			if(un.equals(username)&& passwordService.verifyPassword(userpassword, up)) {
 				Userdata user = sd.get(0);
 				LoginHistory lg=new LoginHistory();
 				lg.setU(user);
@@ -111,6 +116,8 @@ public class Services {
 		else 
 		return false;
 	}
+	
+	
 	
 
 }

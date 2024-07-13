@@ -13,11 +13,13 @@
         ); /* Gradient background */
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         color: #fff; /* White text color */
+        margin: 0;
+        padding: 0;
+        height: 100vh;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        margin: 0;
       }
 
       .container {
@@ -31,6 +33,7 @@
         ); /* Semi-transparent white background */
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
+        margin-bottom: 20px;
       }
 
       h1 {
@@ -42,13 +45,34 @@
         color: #ffd166; /* Highlighted text color */
         font-weight: bold;
       }
+
+      .update-link {
+        font-size: 1.2rem;
+        color: #ffd166; /* Highlighted text color */
+        text-decoration: none;
+      }
+
+      .update-link:hover {
+        text-decoration: underline;
+      }
+
+      .update-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+      }
     </style>
   </head>
-  <head></head>
   <body>
+    <div class="update-container">
+		<a href="/updateuserdetails" class="update-link">Update Your Details</a>
+		<!--<a th:href="@{/updateuserdetails}" th:text="'Update Your Details'">Update Your Details</a>-->
+      
+    </div>
     <div class="container">
       <h1>
-        Hello <span th:text="${Fullname}" class="highlight"></span>, Welcome to Techhub!!
+        Hello <span th:text="${Fullname}" class="highlight"></span>, Welcome to
+        Techhub!!
       </h1>
     </div>
   </body>
