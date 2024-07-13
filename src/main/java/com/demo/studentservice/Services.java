@@ -9,6 +9,8 @@ import com.demo.dao.UserRepository;
 import com.demo.entities.LoginHistory;
 import com.demo.entities.Userdata;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class Services {
 	
@@ -117,7 +119,28 @@ public class Services {
 		return false;
 	}
 	
-	
+	public void updateuserdetails(String username,String updateField,String newValue,HttpSession session)
+	{
+		List<Userdata> users = us.findByUsername(username);
+		Userdata user = users.get(0);
+		switch (updateField) {
+		case "name":
+			user.setName(newValue);
+			break;
+		case "email":
+			user.setEmail(newValue);
+			break;
+		case "username":
+			user.setUsername(newValue);
+			session.setAttribute("loggedInUser", newValue);
+			System.out.println(session.getAttribute("loggedinUser"));
+			break;
+		case "password":
+			user.setPassword(passwordService.hashPassword(newValue));
+			break;
+	}
+		us.save(user);
+	}
 	
 
 }

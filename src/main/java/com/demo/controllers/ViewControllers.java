@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.demo.studentservice.Services;
+import com.demo.studentservice.UserDetailValidationService;
 
+import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -20,83 +20,104 @@ public class ViewControllers {
 	@Autowired
 	Services s;
 	
+	@Autowired
+	UserDetailValidationService uds;
 	
-	@RequestMapping("/")
+	
+	@GetMapping("/")
 	public String home()
 	{
 		return "home";
 	}
 	
 	
-	@RequestMapping("/signup")
+	@GetMapping("/signup")
 	public String signup()
 	{
 		return "signup";
 	}
 	
-	@RequestMapping(value = "/success", method = RequestMethod.GET)
+	@GetMapping("/success")
     public String handleGetRequest() {
         // Redirect to signup page if a GET request is made to /success
         return "redirect:/signup";
     }
 	
-	@RequestMapping("/success")
+	@PostMapping("/success")
 	public String success(@RequestParam("name") String name, @RequestParam("email") String email,
 			@RequestParam("username") String username, @RequestParam("password") String password)
 	{
+		String result=uds.validateUserDetails(name, email, username, password);
 		
-		if (name == null || name.isEmpty() ||
-	            email == null || email.isEmpty() ||
-	            username == null || username.isEmpty() ||
-	            password == null || password.isEmpty()) {
-	            return "mandatoryfields"; // or return appropriate error message or handle it as needed
-	        }
-		else if(!name.matches("[a-zA-Z ]+"))
-		{
+		switch(result) {
+		
+		case "mandatoryfields":
+			return "mandatoryfields";
+			
+		case "validname":
 			return "validname";
-		}
-		else if(!username.matches("[a-zA-Z]+"))
-		{
-			return "validusername";
-		}
-		else if(!email.matches("\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.com\\b"))
-		{
+			
+		case "validemail":
 			return "validemail";
-		}
-		else if(s.isEmailPresent(email)) 
-		{
+			
+		case "validusername":
+			return "validusername";
+			
+		case "emailpresent":
 			return "emailpresent";
+			
+		case "usernamepresent":
+			return "usernamepresent";
+			
+		case "valid":
+			s.create(name,email,username,password);
+			System.out.println("signup happened");
+			return "Signuplogin"; 
+			
+		default:
+			return "signup"; 
+			
 		}
-		else if(s.isUsernamePresent(username)) 
-		{
-				return "usernamepresent";
+		
 		}
-			else {
-		s.create(name,email,username,password);
-		System.out.println("signup happened");
-		return "Signuplogin"; 
-		}
-	}
 	
-	@RequestMapping("/login")
-	public String login()
+	@GetMapping("/login")
+	public String login(HttpSession session,Model m)
 	{
+		 String loggedInUser = (String) session.getAttribute("loggedInUser");
+		 
+		 if (loggedInUser != null) {
+			 	
+			 String Fullname=s.getName(loggedInUser);
+				m.addAttribute("Fullname",Fullname);
+			 
+	            return "Welcome"; // Directly go to welcome page if already logged in
+	        }
 		return "login";
 	}
 	
-	@RequestMapping(value = "/loginsuccess", method = RequestMethod.GET)
-    public String handleGetRequest1() {
-        // Redirect to login page if a GET request is made to /success
+	@GetMapping("/loginsuccess")
+    public String handleGetRequest1(HttpSession session,Model m) {
+		String loggedInUser = (String) session.getAttribute("loggedInUser");
+		 
+		 if (loggedInUser != null) {
+			 String Fullname=s.getName(loggedInUser);
+				m.addAttribute("Fullname",Fullname);
+	            return "Welcome"; // Directly go to welcome page if already logged in
+	        }
         return "redirect:/login";
     }
 	
-	@RequestMapping("/loginsuccess")
-	public String loginsuccess(@RequestParam("name") String username, @RequestParam("password") String userpassword,Model m)
+	@PostMapping("/loginsuccess")
+    public String loginsuccess(@RequestParam("name") String username, @RequestParam("password") String userpassword,HttpSession session, Model m)
 	{
+		
 		if(s.isAuthenticated(username,userpassword)) {
 			
 			String Fullname=s.getName(username);
 			m.addAttribute("Fullname",Fullname);
+			m.addAttribute("username",username);
+			session.setAttribute("loggedInUser", username); // Store username in session
 			System.out.println("login happened.....");
 			return "Welcome";
 		}
@@ -104,16 +125,61 @@ public class ViewControllers {
 			return "errlogin";
 	}
 	
-	@RequestMapping("/updateuserdetails")
-	public String updateuserdetails()
-	{
-		return "updateuserdetails";
+	@GetMapping("/updateuserdetails")
+    public String updateuserdetails(HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+ 
+        if (loggedInUser != null) {
+            return "updateuserdetails";
+        } else {
+            return "login"; // Redirect to login if not authenticated
+        }
 	}
 	
-	@RequestMapping("/updateDetails")
-	public String updateuser()
+	@PostMapping("/updateDetails")
+	public String updateuser(HttpSession session,@RequestParam("currentPassword") String userpassword,
+			@RequestParam("updateField") String updateField,@RequestParam("newValue") String newValue, Model m)
 	{
-		return "login";
+		String username=(String) session.getAttribute("loggedInUser");
+		
+		if (username != null) {
+		
+		if(s.isAuthenticated(username,userpassword)) {
+			
+			s.updateuserdetails(username,updateField,newValue,session);
+			
+			String newusername=(String) session.getAttribute("loggedInUser");
+			
+			String Fullname=s.getName(newusername);
+			
+			m.addAttribute("Fullname",Fullname);
+			
+			m.addAttribute("Fullname",Fullname);
+			
+			return "Welcome";
+		}
+			return "updateDetails";
+		}
+			else {
+		
+	
+		return "redirect:/login";
+			}
+		
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session)
+	{
+		String loggedInUser = (String) session.getAttribute("loggedInUser");
+		if (loggedInUser != null) {
+			session.invalidate();
+			return "home";
+		}
+		else
+			return "login";
+				 
+		
 	}
 
 }
