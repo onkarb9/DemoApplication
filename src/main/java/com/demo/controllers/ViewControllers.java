@@ -8,7 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.demo.entities.Session;
 import com.demo.studentservice.Services;
+import com.demo.studentservice.SessionService;
 import com.demo.studentservice.UserDetailValidationService;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +25,9 @@ public class ViewControllers {
 	
 	@Autowired
 	UserDetailValidationService uds;
+	
+	@Autowired
+	SessionService sessionService;
 	
 	
 	@GetMapping("/")
@@ -84,27 +90,37 @@ public class ViewControllers {
 	@GetMapping("/login")
 	public String login(HttpSession session,Model m)
 	{
-		 String loggedInUser = (String) session.getAttribute("loggedInUser");
+		 String token = (String) session.getAttribute("sessionToken");
 		 
-		 if (loggedInUser != null) {
-			 	
-			 String Fullname=s.getName(loggedInUser);
-				m.addAttribute("Fullname",Fullname);
-			 
-	            return "Welcome"; // Directly go to welcome page if already logged in
+		 if (token != null) {
+			    Session dbSession = sessionService.findByToken(token);
+			    if (dbSession != null && token.equals(dbSession.getToken())) {
+			    	
+			    	String username = dbSession.getUsername();
+				    String Fullname=s.getName(username);
+					m.addAttribute("Fullname",Fullname);
+		            return "Welcome"; // Directly go to welcome page if already logged in
+			    }   
 	        }
+		 
 		return "login";
 	}
 	
 	@GetMapping("/loginsuccess")
     public String handleGetRequest1(HttpSession session,Model m) {
-		String loggedInUser = (String) session.getAttribute("loggedInUser");
+		String token = (String) session.getAttribute("sessionToken");
 		 
-		 if (loggedInUser != null) {
-			 String Fullname=s.getName(loggedInUser);
+		if (token != null) {
+		    Session dbSession = sessionService.findByToken(token);
+		    if (dbSession != null && token.equals(dbSession.getToken())) {
+			 	
+			 String username = sessionService.findByToken(token).getUsername();
+			 	
+			 String Fullname=s.getName(username);
 				m.addAttribute("Fullname",Fullname);
 	            return "Welcome"; // Directly go to welcome page if already logged in
 	        }
+		}
         return "redirect:/login";
     }
 	
@@ -116,8 +132,15 @@ public class ViewControllers {
 			
 			String Fullname=s.getName(username);
 			m.addAttribute("Fullname",Fullname);
-			m.addAttribute("username",username);
-			session.setAttribute("loggedInUser", username); // Store username in session
+			
+			
+			String token = sessionService.createSession(username);
+            session.setAttribute("sessionToken", token);
+			
+			
+			
+			/*m.addAttribute("username",username);
+			session.setAttribute("loggedInUser", username); // Store username in session*/
 			System.out.println("login happened.....");
 			return "Welcome";
 		}
@@ -127,38 +150,71 @@ public class ViewControllers {
 	
 	@GetMapping("/updateuserdetails")
     public String updateuserdetails(HttpSession session) {
-        String loggedInUser = (String) session.getAttribute("loggedInUser");
- 
-        if (loggedInUser != null) {
+		String token = (String) session.getAttribute("sessionToken");
+		 
+		if (token != null) {
+		    Session dbSession = sessionService.findByToken(token);
+		    if (dbSession != null && token.equals(dbSession.getToken())) {
             return "updateuserdetails";
-        } else {
+		    } 
+		    
+		}
+		
             return "login"; // Redirect to login if not authenticated
-        }
 	}
+	
+	
+	
+	
+	@GetMapping("/updateDetails")
+    public String updateDetailsget(HttpSession session,Model m) {
+		String token = (String) session.getAttribute("sessionToken");
+		 
+		if (token != null) {
+		    Session dbSession = sessionService.findByToken(token);
+		    if (dbSession != null && token.equals(dbSession.getToken())) {
+		    	
+		    	 String username = sessionService.findByToken(token).getUsername();
+				 String Fullname=s.getName(username);
+				 m.addAttribute("Fullname",Fullname);
+				 return "Welcome";
+		    } 
+		    
+		}
+		
+            return "login"; // Redirect to login if not authenticated
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	@PostMapping("/updateDetails")
 	public String updateuser(HttpSession session,@RequestParam("currentPassword") String userpassword,
 			@RequestParam("updateField") String updateField,@RequestParam("newValue") String newValue, Model m)
 	{
-		String username=(String) session.getAttribute("loggedInUser");
+		String token = (String) session.getAttribute("sessionToken");
 		
-		if (username != null) {
+		String username = sessionService.findByToken(token).getUsername();
+		 
+		 if (username != null && sessionService.findByToken(token) != null) {
 		
 		if(s.isAuthenticated(username,userpassword)) {
 			
 			s.updateuserdetails(username,updateField,newValue,session);
 			
-			String newusername=(String) session.getAttribute("loggedInUser");
-			
-			String Fullname=s.getName(newusername);
-			
-			m.addAttribute("Fullname",Fullname);
+			String uname = sessionService.findByToken(token).getUsername();
+		 	
+			 String Fullname=s.getName(uname);
 			
 			m.addAttribute("Fullname",Fullname);
 			
 			return "Welcome";
 		}
-			return "updateDetails";
+			return "updateuserdetails";
 		}
 			else {
 		
@@ -171,12 +227,16 @@ public class ViewControllers {
 	@GetMapping("/logout")
 	public String logout(HttpSession session)
 	{
-		String loggedInUser = (String) session.getAttribute("loggedInUser");
-		if (loggedInUser != null) {
+		String token = (String) session.getAttribute("sessionToken");
+		 
+		if (token != null) {
+		    Session dbSession = sessionService.findByToken(token);
+		    if (dbSession != null && token.equals(dbSession.getToken())) {
+			 sessionService.deleteByToken(token);
 			session.invalidate();
 			return "home";
 		}
-		else
+		}
 			return "login";
 				 
 		
