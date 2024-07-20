@@ -1,24 +1,27 @@
 package com.demo.studentservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import com.demo.dao.SessionRepository;
-
+import com.demo.entities.Session;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class SessionCleanupService {
+	
+	@Autowired
+    SessionService sessionService;
 
-    private final SessionRepository sessionRepository;
+    @Scheduled(fixedRate = 60000)
+    public void cleanUpInactiveSessions() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime thresholdTime = currentTime.minusMinutes(1);
 
-    public SessionCleanupService(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
-    }
-
-    @Scheduled(fixedRate = 60000) // Run every minute
-    public void cleanUpExpiredTokens() {
-        LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(5);
-        sessionRepository.deleteByLastAccessedTimeBefore(expirationTime);
+        List<Session> inactiveSessions=sessionService.findInactiveSessions(thresholdTime);
+        
+        for(Session session : inactiveSessions) {
+        	sessionService.deleteSession(session.getId());
+        }
     }
 }
