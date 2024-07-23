@@ -79,7 +79,7 @@ public class UserController {
 		if(sessionService.isSessionValid(token)) {
 			String username = sessionService.findByToken(token).getUsername();
 		 	
-			 String Fullname=s.getName(username);
+			 	String Fullname=s.getName(username);
 				m.addAttribute("Fullname",Fullname);
 	            return "Welcome"; // Directly go to welcome page if already logged in
 	        }

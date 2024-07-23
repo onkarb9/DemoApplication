@@ -41,7 +41,7 @@ public class ViewControllers {
 		    
 		}
 		
-            return "login"; // Redirect to login if not authenticated
+            return "redirect:/login"; // Redirect to login if not authenticated
 	}
 	
 
@@ -60,7 +60,7 @@ public class ViewControllers {
 		    
 		}
 		
-            return "login"; // Redirect to login if not authenticated
+            return "redirect:/login"; // Redirect to login if not authenticated
 	}
 	
 	

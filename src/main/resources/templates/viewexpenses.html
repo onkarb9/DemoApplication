@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Expenses</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for styling -->
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+            font-family: Arial, sans-serif;
+            color: #333; /* Dark gray text color */
+            margin-top: 20px; /* Add margin to the top */
+        }
+        .container {
+            background-color: #ffffff; /* White container background */
+            padding: 20px; /* Padding inside the container */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for container */
+        }
+        h1 {
+            color: #007bff; /* Blue heading color */
+            text-align: center; /* Center align heading */
+            margin-bottom: 30px; /* Bottom margin for heading */
+            background-color: #f0f0f0; /* Light gray background for heading */
+            padding: 10px; /* Padding inside heading */
+            border-radius: 10px; /* Rounded corners for heading */
+        }
+        h1 span {
+            color: #dc3545; /* Red color for date */
+        }
+        table {
+            width: 100%; /* Table takes full width of container */
+            margin-bottom: 20px; /* Bottom margin for the table */
+            border-collapse: collapse; /* Collapse borders */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for table */
+            border-radius: 10px; /* Rounded corners for table */
+            overflow: hidden; /* Hide overflow */
+        }
+        th, td {
+            padding: 12px; /* Padding for table cells */
+            text-align: left; /* Left align text */
+            border-bottom: 1px solid #ddd; /* Bottom border for rows */
+        }
+        th {
+            background-color: #007bff; /* Blue background for table header */
+            color: #fff; /* White text color for table header */
+        }
+        .total-row {
+            font-weight: bold; /* Bold font for total row */
+            font-size: larger; /* Larger font size for total row */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="'Welcome, ' + ${Fullname} + '! Expenses for ' + ${date}"><span th:text="${date}"></span></h1>
+        
+        <table class="table">
+            <thead>
+                <tr>
+					<th>Purpose</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="expense : ${Expenses}">
+					<td th:text="${expense.purpose}"></td>
+                    <td th:text="${expense.expenseDate}"></td>
+                    <td th:text="${expense.amount}"></td>
+                </tr>
+                <!-- Display total sum row -->
+                <tr class="total-row">
+                    <td colspan="2"><strong>Total:</strong></td>
+                    <td th:text="${Sum}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
